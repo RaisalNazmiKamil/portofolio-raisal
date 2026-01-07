@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio | Raisal Nazmi Kamil</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- CONFIG & VARIABLES --- */
+        :root {
+            --bg-body: #050505;       
+            --bg-card: #111827;       
+            --bg-card-hover: #1f2937; 
+            --accent: #14b8a6;        /* Hijau Teal */
+            --accent-glow: rgba(20, 184, 166, 0.2);
+            --text-main: #f9fafb;     
+            --text-muted: #9ca3af;    
+            --border: #374151;        
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden; 
+        }
+
+        /* --- BUTTON STYLES --- */
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-primary { background: var(--accent); color: #000; border: 1px solid var(--accent); }
+        .btn-primary:hover { background: transparent; color: var(--accent); }
+
+        .btn-outline { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+        .btn-outline:hover { background: var(--accent); color: #000; }
+
+
+        /* --- MUSIC BUTTON --- */
+        .music-btn {
+            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
+            background-color: var(--bg-card); border: 2px solid var(--accent); border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; cursor: pointer;
+            z-index: 1000; box-shadow: 0 0 15px var(--accent-glow); transition: all 0.3s ease;
+            color: var(--accent); font-size: 1.2rem;
+        }
+        .music-btn:hover { transform: scale(1.1); background-color: var(--accent); color: #000; }
+        .music-playing { animation: spin 3s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+
+        /* --- INTRO OVERLAY --- */
+        #intro-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; z-index: 9999;
+            display: flex; justify-content: center; align-items: center; text-align: center;
+            transition: opacity 1s ease-in-out;
+        }
+        .intro-content h1 {
+            font-size: 3rem; font-weight: 700; color: var(--text-main);
+            opacity: 0; transform: translateY(20px); animation: fadeInUp 1s ease forwards;
+        }
+        .intro-content span { color: var(--accent); }
+        .intro-content p {
+            margin-top: 10px; font-size: 1.2rem; color: var(--text-muted);
+            opacity: 0; transform: translateY(20px); animation: fadeInUp 1s ease forwards 0.5s;
+        }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .fade-out { opacity: 0; pointer-events: none; }
+
+        /* --- ANIMATION UTILITIES --- */
+        .reveal { position: relative; transform: translateY(50px); opacity: 0; transition: all 0.8s ease-out; }
+        .reveal.active { transform: translateY(0); opacity: 1; }
+
+        /* --- LAYOUT UTILITY --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        section { padding: 100px 0; border-bottom: 1px solid #1f1f1f; }
+        h1, h2, h3 { font-weight: 700; color: var(--text-main); }
+        h2 { font-size: 2rem; margin-bottom: 50px; position: relative; display: inline-block; }
+        h2::after { content: ''; display: block; width: 60px; height: 4px; background: var(--accent); margin-top: 10px; border-radius: 2px; }
+        p { color: var(--text-muted); }
+        a { text-decoration: none; transition: 0.3s; }
+
+        /* --- HERO SECTION --- */
+        .hero { display: flex; align-items: center; justify-content: space-between; min-height: 90vh; }
+        .hero-text { flex: 1; padding-right: 50px; position: relative; }
+        
+        .role-badge {
+            display: inline-block; background: var(--accent-glow); color: var(--accent);
+            padding: 8px 16px; border-radius: 50px; font-size: 0.9rem; font-weight: 600;
+            margin-bottom: 20px; border: 1px solid rgba(20, 184, 166, 0.3);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem; line-height: 1.1; margin-bottom: 25px;
+            background: linear-gradient(to right, #fff, #9ca3af);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .hero-img-box {
+            position: relative; width: 350px; height: 350px; border-radius: 50%;
+            border: 2px solid var(--border); padding: 15px; display: flex;
+            justify-content: center; align-items: center; transition: border-color 0.3s;
+        }
+        .hero-img-box:hover { border-color: var(--accent); }
+        .hero-img-box img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
+            filter: grayscale(20%); transition: 0.5s;
+        }
+        .hero-img-box:hover img { filter: grayscale(0%); }
+
+        /* --- EXPERIENCE TIMELINE --- */
+        .timeline { position: relative; padding-left: 40px; }
+        .timeline::before {
+            content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 2px; background: var(--border);
+        }
+        .timeline-item {
+            position: relative; margin-bottom: 40px; background: var(--bg-card);
+            padding: 25px; border-radius: 12px; border: 1px solid var(--border); transition: all 0.3s ease;
+        }
+        .timeline-item:hover {
+            transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 30px -10px var(--accent-glow);
+        }
+        .timeline-dot {
+            position: absolute; left: -46px; top: 30px; width: 14px; height: 14px;
+            background: var(--bg-body); border: 3px solid var(--accent); border-radius: 50%; z-index: 1;
+        }
+        .job-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 15px; flex-wrap: wrap; gap: 10px;
+        }
+        .job-title { font-size: 1.25rem; color: var(--text-main); margin: 0; }
+        .job-company { color: var(--accent); font-weight: 600; font-size: 1rem; }
+        .job-date { 
+            font-size: 0.85rem; background: #1f2937; padding: 5px 12px; 
+            border-radius: 6px; color: var(--text-muted);
+        }
+        .job-desc { list-style: none; }
+        .job-desc li { position: relative; padding-left: 20px; margin-bottom: 8px; font-size: 0.95rem; color: var(--text-muted); }
+        .job-desc li::before { content: '▹'; position: absolute; left: 0; color: var(--accent); }
+
+        /* --- PORTFOLIO SECTION --- */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        .project-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+            overflow: hidden; transition: all 0.3s ease; display: flex; flex-direction: column;
+        }
+        .project-card:hover { border-color: var(--accent); transform: translateY(-10px); }
+        .project-img-slot {
+            width: 100%; height: 220px; background-color: #27272a; position: relative; overflow: hidden;
+        }
+        .project-img-slot img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .project-card:hover .project-img-slot img { transform: scale(1.05); }
+        .project-content { padding: 25px; flex: 1; display: flex; flex-direction: column; }
+        .project-title { font-size: 1.2rem; margin-bottom: 10px; line-height: 1.4; }
+        .project-desc { font-size: 0.9rem; margin-bottom: 20px; flex: 1; }
+        .project-link { display: inline-flex; align-items: center; gap: 8px; color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+        .project-link:hover { text-decoration: underline; }
+
+        /* --- TRAINING & CREDENTIALS --- */
+        .training-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .training-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px;
+            padding: 25px; transition: all 0.3s ease; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .training-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .training-header { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 15px; }
+        .training-icon { font-size: 1.5rem; color: var(--accent); background: var(--accent-glow); padding: 10px; border-radius: 8px; }
+        .training-title { font-size: 1.1rem; font-weight: 600; line-height: 1.4; }
+        .training-provider { font-size: 0.9rem; color: var(--accent); margin-bottom: 10px; font-weight: 500; display: block; }
+        .training-desc { font-size: 0.9rem; color: var(--text-muted); padding-top: 15px; margin-top: 10px; border-top: 1px solid var(--border); margin-bottom: 20px;}
+        .btn-credential {
+            display: inline-block; text-align: center; width: 100%; padding: 8px 0;
+            border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted);
+            font-size: 0.85rem; font-weight: 500; transition: 0.3s;
+        }
+        .btn-credential:hover { background: var(--bg-card-hover); color: var(--accent); border-color: var(--accent); }
+
+        /* --- SKILLS --- */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .skill-card {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+            padding: 15px 20px; display: flex; align-items: center; gap: 15px; transition: all 0.3s ease;
+        }
+        .skill-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+        .skill-icon { font-size: 1.5rem; color: var(--accent); width: 30px; text-align: center; }
+        .skill-name { font-weight: 500; color: var(--text-main); }
+
+        /* --- FOOTER --- */
+        .footer-content { text-align: center; padding: 50px 0; }
+        .social-links { margin-top: 30px; display: flex; justify-content: center; gap: 20px; }
+        .social-link {
+            display: flex; align-items: center; gap: 10px; color: var(--text-muted);
+            padding: 10px 20px; border-radius: 8px; border: 1px solid transparent;
+        }
+        .social-link:hover { color: var(--accent); border-color: var(--border); background: var(--bg-card); }
+
+        @media (max-width: 768px) {
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 40px; }
+            .hero-text { padding-right: 0; margin-top: 40px; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero-img-box { width: 280px; height: 280px; }
+            .timeline { padding-left: 20px; }
+            .timeline-dot { left: -28px; }
+            .job-header { flex-direction: column; align-items: flex-start; }
+            .job-date { margin-top: 5px; }
+            .intro-content h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-btn" onclick="toggleMusic()" title="Play/Pause Music">
+        <i class="fa-solid fa-music" id="music-icon"></i>
+    </div>
+
+    <div id="intro-overlay">
+        <div class="intro-content">
+            <h1>Hello, I'm <span>Raisal</span></h1>
+            <p>Welcome to my Portfolio</p>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <section class="hero reveal">
+            <div class="hero-text">
+                <span class="role-badge">Geodesy & Geomatics Engineer</span>
+                <h1>Raisal Nazmi Kamil</h1>
+                <p>
+                    Undergraduate Fast-track Master & Bachelor student at Geodesy and Geomatics Engineering, Institut Teknologi Bandung (ITB). 
+                    Passionate in Hydrography Survey, Geomatics Engineering, and Geospatial Data Analysis.
+                </p>
+                
+                <div class="btn-group">
+                    <a href="#contact" class="btn btn-primary">Let's Connect</a>
+                    <a href="cv.pdf" download class="btn btn-outline">
+                        Download CV <i class="fa-solid fa-download"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-img-box">
+                <img src="profil1.jpeg" alt="Raisal Nazmi Kamil">
+            </div>
+        </section>
+
+        <section id="experience" class="reveal">
+            <h2>Work Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="job-header">
+                        <div><h3 class="job-title">Land Surveyor</h3><div class="job-company">Kreasi Handal Selaras</div></div>
+                        <span class="job-date">July – Aug 2025</span>
+                    </div>
+                    <ul class="job-desc">
+                        <li>Surveyed the topography of a 114-hectare land area for residential development in Rumpin, Bogor.</li>
+                        <li>Measured three densely forested areas inaccessible to LIDAR using the RTK method (150 points).</li>
+                        <li>Collected 11 GCP/ICP data using GNSS and measured benchmarks using static methods.</li>
+                    </ul>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="job-header">
+                        <div><h3 class="job-title">Land Surveyor</h3><div class="job-company">Bojong Koneng Corporation</div></div>
+                        <span class="job-date">March 2025</span>
+                    </div>
+                    <ul class="job-desc">
+                        <li>Measured residential land boundaries using RTK method (3 hectares).</li>
+                        <li>Built benchmarks, installed 6 GCPs, and assisted LiDAR pilot operations.</li>
+                    </ul>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="job-header">
+                        <div><h3 class="job-title">Student Internship</h3><div class="job-company">Pushidrosal TNI AL</div></div>
+                        <span class="job-date">Jan – Feb 2025</span>
+                    </div>
+                    <ul class="job-desc">
+                        <li>Processed SSS data for seafloor mapping using SonarWiz (10 km survey lines in Singapore Strait).</li>
+                        <li>Performed QC and analysis of imagery for seafloor characteristics based on IHO guidelines.</li>
+                    </ul>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="job-header">
+                        <div><h3 class="job-title">Teaching Assistant</h3><div class="job-company">Geospatial Expedition (ITB)</div></div>
+                        <span class="job-date">Nov 2024</span>
+                    </div>
+                    <ul class="job-desc">
+                        <li>Accompanied 6 students on an outdoor excursion; Delivered modules on First Aid, Orienteering, and Survival.</li>
+                    </ul>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="job-header">
+                        <div><h3 class="job-title">Data Processing Operator</h3><div class="job-company">PT Geo Mandiri Survei</div></div>
+                        <span class="job-date">Aug 2024</span>
+                    </div>
+                    <ul class="job-desc">
+                        <li>ESDM National Project: 550 km Natural Gas Pipeline (Sumatra).</li>
+                        <li>Processed point clouds, built DEMs, and generated contours.</li>
+                    </ul>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="job-header">
+                        <div><h3 class="job-title">Freelance Surveyor</h3><div class="job-company">GISACT</div></div>
+                        <span class="job-date">July 2024</span>
+                    </div>
+                    <ul class="job-desc">
+                        <li>Acquired 72 qualitative data entries through interviews with MSMEs across Bandung City.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="reveal">
+            <h2>Selected Projects</h2>
+            <div class="portfolio-grid">
+                
+                <div class="project-card reveal">
+                    <div class="project-img-slot">
+                        <img src="porto1.jpeg" alt="Agricultural Monitoring">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Agricultural Land Monitoring Using Google Earth Engine</h3>
+                        <p class="project-desc">
+                            Developed a cloud-based application to analyze vegetation condition trends using remote sensing data in Bojonegoro Regency. Features time-series visualizations of EVI, NDVI, and MSAVI values.
+                        </p>
+                        <a href="https://www.linkedin.com/posts/raisalkamil_javascript-googleearthengine-gis-activity-7208467511774699521-TkSG" target="_blank" class="project-link">
+                            View on LinkedIn <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-card reveal">
+                    <div class="project-img-slot">
+                        <img src="porto2.jpeg" alt="Bathymetric Modeling">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">3D Seafloor Bathymetric Modeling from MGD77T Data</h3>
+                        <p class="project-desc">
+                            Transforming raw MGD77T trackline geophysical data into a 3D bathymetric model using GMT and Golden Software Surfer. Integrated multi-source marine datasets to represent seafloor geomorphology.
+                        </p>
+                        <a href="https://www.linkedin.com/posts/raisalkamil_hydrography-ihocata-geospatialdata-activity-7414364558221484032-EiK_" target="_blank" class="project-link">
+                            View on LinkedIn <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="training" class="reveal">
+            <h2>Training & Certifications</h2>
+            <div class="training-grid">
+                <div class="training-card reveal">
+                    <div>
+                        <div class="training-header">
+                            <i class="fa-solid fa-water training-icon"></i>
+                            <div><h3 class="training-title">Tide Calculation Prediction using Excel</h3><span class="training-provider">Global Oceanic</span></div>
+                        </div>
+                        <p class="training-desc">Performed harmonic analysis to predict tidal patterns essential for accurate hydrographic survey corrections.</p>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1m565ibrMA09OMb5D4PHmU6Pls1XKVU-N/view?usp=drivesdk" class="btn-credential">Show Credential <i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+
+                <div class="training-card reveal">
+                    <div>
+                        <div class="training-header">
+                            <i class="fa-solid fa-ship training-icon"></i>
+                            <div><h3 class="training-title">Bathymetric Survey (Full Cycle)</h3><span class="training-provider">Global Oceanic</span></div>
+                        </div>
+                        <p class="training-desc">Comprehensive training on the full hydrographic survey lifecycle, ensuring IHO-compliant data quality.</p>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1Y7_d6SglB7DKQ9lS2Viwu_RudtMZJsH0/view?usp=drivesdk" class="btn-credential">Show Credential <i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+
+                <div class="training-card reveal">
+                    <div>
+                        <div class="training-header">
+                            <i class="fa-solid fa-wave-square training-icon"></i>
+                            <div><h3 class="training-title">Processing MBES Data</h3><span class="training-provider">Aksara Lab Indonesia</span></div>
+                        </div>
+                        <p class="training-desc">Specialized in cleaning noise from Multibeam data to generate high-fidelity seafloor topography models.</p>
+                    </div>
+                    <a href="https://drive.google.com/drive/folders/1GzQ9ewDFI2xqUkV8iUrnaW6zz4hdiAki" class="btn-credential">Show Credential <i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+
+                <div class="training-card reveal">
+                    <div>
+                        <div class="training-header">
+                            <i class="fa-solid fa-chart-line training-icon"></i>
+                            <div><h3 class="training-title">SBES Data Processing</h3><span class="training-provider">Aksara Lab Indonesia</span></div>
+                        </div>
+                        <p class="training-desc">Focused on verifying vertical accuracy of Single Beam data for precise 3D underwater modeling.</p>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1ebIZgylJQY9SeNKsdIHusrXpgMNxGEsd/view?usp=drivesdk" class="btn-credential">Show Credential <i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+
+                <div class="training-card reveal">
+                    <div>
+                        <div class="training-header">
+                            <i class="fa-solid fa-image training-icon"></i>
+                            <div><h3 class="training-title">Aerial Photo Processing for DEM</h3><span class="training-provider">Aksara Lab Indonesia</span></div>
+                        </div>
+                        <p class="training-desc">Learned photogrammetric workflows to convert aerial imagery into precise Digital Elevation Models (DEMs).</p>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1nMMJZIbon1bxl0sQKWotycI26wcKbzBF/view" class="btn-credential">Show Credential <i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+
+                <div class="training-card reveal">
+                    <div>
+                        <div class="training-header">
+                            <i class="fa-solid fa-map-location-dot training-icon"></i>
+                            <div><h3 class="training-title">Basic GIS for Industry</h3><span class="training-provider">Engineering Academy ID</span></div>
+                        </div>
+                        <p class="training-desc">Acquired fundamental GIS spatial analysis skills applicable to solving industrial data management challenges.</p>
+                    </div>
+                    <a href="https://cdn.anakteknik.co.id/certificate/live-training/386/completion/GIS-IV-24-ATI-8302951995.pdf" class="btn-credential">Show Credential <i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+                 <div class="training-card reveal">
+                    <div>
+                        <div class="training-header">
+                            <i class="fa-solid fa-mountain training-icon"></i>
+                            <div><h3 class="training-title">Basic GIS For Mining</h3><span class="training-provider">Pitindo Training</span></div>
+                        </div>
+                        <p class="training-desc">Specialized in applying GIS techniques specifically for mining site mapping and resource management.</p>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1XMjGenfkSLJFaQjukn_5B3dACMZwV5iD/view" class="btn-credential">Show Credential <i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+                 <div class="training-card reveal">
+                    <div>
+                        <div class="training-header">
+                            <i class="fa-solid fa-helicopter training-icon"></i>
+                            <div><h3 class="training-title">Drone for Mapping</h3><span class="training-provider">Pitindo Training</span></div>
+                        </div>
+                        <p class="training-desc">Mastered flight planning, regulations, and UAV operation procedures for efficient aerial data acquisition.</p>
+                    </div>
+                    <a href="https://drive.google.com/file/d/1--dO4laG9HU1c9wxD82E31eW2KC2dv1U/view?usp=sharing" class="btn-credential">Show Credential <i class="fa-solid fa-up-right-from-square"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <section id="language" class="reveal">
+            <h2>Language Proficiency</h2>
+            <div class="training-grid">
+                <div class="training-card reveal">
+                    <div>
+                        <div class="training-header">
+                            <i class="fa-solid fa-language training-icon"></i>
+                            <div>
+                                <h3 class="training-title">TOEFL Prediction Score</h3>
+                                <span class="training-provider">Brighten English</span>
+                            </div>
+                        </div>
+                        <p class="training-desc">Achieved a score of <strong>553</strong>, demonstrating professional working proficiency in English.</p>
+                    </div>
+                    <a href="https://www.e-ujian.com/cert/GhG5mh.154123" target="_blank" class="btn-credential">
+                        View Certificate <i class="fa-solid fa-up-right-from-square"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="reveal">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card"><i class="fa-solid fa-earth-americas skill-icon"></i><span class="skill-name">ArcGIS Pro</span></div>
+                <div class="skill-card"><i class="fa-solid fa-leaf skill-icon"></i><span class="skill-name">QGIS</span></div>
+                <div class="skill-card"><i class="fa-solid fa-map skill-icon"></i><span class="skill-name">Global Mapper</span></div>
+                <div class="skill-card"><i class="fa-solid fa-layer-group skill-icon"></i><span class="skill-name">Spatix</span></div>
+                <div class="skill-card"><i class="fa-solid fa-water skill-icon"></i><span class="skill-name">SonarWiz</span></div>
+                <div class="skill-card"><i class="fa-solid fa-ship skill-icon"></i><span class="skill-name">HYPACK</span></div>
+                <div class="skill-card"><i class="fa-solid fa-anchor skill-icon"></i><span class="skill-name">Eiva Navisuite</span></div>
+                <div class="skill-card"><i class="fa-solid fa-cube skill-icon"></i><span class="skill-name">Agisoft Metashape</span></div>
+                <div class="skill-card"><i class="fa-solid fa-ruler-combined skill-icon"></i><span class="skill-name">Trimble Business Center</span></div>
+                <div class="skill-card"><i class="fa-solid fa-satellite-dish skill-icon"></i><span class="skill-name">GNSS RTK/Static</span></div>
+                <div class="skill-card"><i class="fa-solid fa-helicopter skill-icon"></i><span class="skill-name">Pilot Drone</span></div>
+                <div class="skill-card"><i class="fa-solid fa-code skill-icon"></i><span class="skill-name">GMT</span></div>
+            </div>
+        </section>
+
+        <section id="contact" class="reveal" style="border-bottom: none;">
+            <div class="footer-content">
+                <h2>Let's Get in Touch !!</h2>
+                <p style="max-width: 600px; margin: 0 auto;">
+                    Thank you for your interest. I welcome feedback, questions, and suggestions related to Geomatics and Hydrography opportunities.
+                </p>
+
+                <div class="social-links">
+                    <a href="mailto:raisalnazmi@gmail.com" class="social-link">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Email</span>
+                    </a>
+                    <a href="https://www.linkedin.com/in/raisalkamil/" target="_blank" class="social-link">
+                        <i class="fa-brands fa-linkedin"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://www.instagram.com/raiisall" target="_blank" class="social-link">
+                        <i class="fa-brands fa-instagram"></i>
+                        <span>Instagram</span>
+                    </a>
+                </div>
+                
+                <div style="margin-top: 50px; font-size: 0.8rem; color: #374151;">
+                    &copy; 2026 Raisal Nazmi Kamil. All rights reserved.
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // 1. MUSIC CONTROL
+        const music = document.getElementById("bg-music");
+        const musicBtn = document.querySelector(".music-btn");
+        const musicIcon = document.getElementById("music-icon");
+
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                musicIcon.classList.remove("fa-music");
+                musicIcon.classList.add("fa-pause");
+                musicBtn.classList.add("music-playing");
+            } else {
+                music.pause();
+                musicIcon.classList.remove("fa-pause");
+                musicIcon.classList.add("fa-music");
+                musicBtn.classList.remove("music-playing");
+            }
+        }
+
+        // 2. INTRO SCRIPT
+        window.addEventListener('load', () => {
+            const overlay = document.getElementById('intro-overlay');
+            setTimeout(() => {
+                overlay.classList.add('fade-out');
+                setTimeout(() => { overlay.style.display = 'none'; }, 1000); 
+            }, 3000);
+        });
+
+        // 3. SCROLL REVEAL
+        window.addEventListener('scroll', reveal);
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal');
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        reveal();
+    </script>
+
+</body>
+</html>
